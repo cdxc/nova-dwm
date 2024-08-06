@@ -12,3 +12,7 @@ kaj je drugac(nouga)?
 - vec
 
 - se vec
+
+- bar:
+	$ cp bar.sh /usr/local/sbin && sed -i '1s/^/exec \/usr\/local\/sbin\/bar.sh \&\n/' .xinitrc
+
