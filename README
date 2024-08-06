@@ -1,4 +1,14 @@
 nova-dwm - dynamic window manager
 =================================
 
-joujou jou
+kaj je drugac(nouga)?
+
+- annoying obarvanga headerja? kjer je ime okna v baru ni vec. (commit 0aa1e79664d78f7f08ef3b8982edeb22bab4a124)
+
+- osebno prilagojine shortcuti za kontrolirat zaluzije itd. so dodani (kompatibilnost s https://github.com/cdxc/mqtt-lucke)
+
+- lepsi colorscheme (3 moznosti, 2 zakomentirane)
+
+- vec
+
+- se vec
