@@ -4,7 +4,7 @@
  static const unsigned int borderpx  = 1;        /* border pixel of windows */
  static const unsigned int snap      = 32;       /* snap pixel */
  static const int showbar            = 1;        /* 0 means no bar */
- static const int topbar             = 0;        /* 0 means bottom bar */
+ static const int topbar             = 1;        /* 0 means bottom bar */
  static const char *fonts[]          = { "Terminus:size=12" };
  static const char dmenufont[]       = "Terminus:size=12";
  static const char col_gray1[]       = "#DDDDDD";
@@ -26,8 +26,13 @@
 /* 	[SchemeNorm] = { nfg, nbg, nbor },
  	[SchemeSel]  = { sfg, sbg, sbor },
 */
+/*
  	[SchemeNorm] = { col_gray3, col_gray4, col_gray1 },
  	[SchemeSel]  = { col_gray4, col_gray3, col_cyan },
+*/
+
+ 	[SchemeNorm] = { "#ffffff", "#000000", "#000000"},
+ 	[SchemeSel] =  { "#ffffff", "#1fecd0", "#888888"},
  };
  
  /* tagging */
