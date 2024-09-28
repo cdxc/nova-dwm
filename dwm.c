@@ -431,83 +431,83 @@ buttonpress(XEvent *e)
 		selmon = m;
 		focus(NULL);
 	}
-	if (ev->window == selmon->barwin) {
-		i = x = 0;
-		do
-			x += TEXTW(tags[i]);
-		while (ev->x >= x && ++i < LENGTH(tags));
-		if (i < LENGTH(tags)) {
-			click = ClkTagBar;
-			arg.ui = 1 << i;
-		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
-			click = ClkLtSymbol;
-		else if (ev->x > selmon->ww - (int)TEXTW(stext))
-			click = ClkStatusText;
-		else
-			click = ClkWinTitle;
-	} else if ((c = wintoclient(ev->window))) {
-		focus(c);
-		restack(selmon);
-		XAllowEvents(dpy, ReplayPointer, CurrentTime);
-		click = ClkClientWin;
-	}
-	for (i = 0; i < LENGTH(buttons); i++)
-		if (click == buttons[i].click && buttons[i].func && buttons[i].button == ev->button
-		&& CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state))
-			buttons[i].func(click == ClkTagBar && buttons[i].arg.i == 0 ? &arg : &buttons[i].arg);
-}
+    if (ev->window == selmon->barwin) {
+      i = x = 0;
+      do
+        x += TEXTW(tags[i]);
+      while (ev->x >= x && ++i < LENGTH(tags));
+      if (i < LENGTH(tags)) {
+        click = ClkTagBar;
+        arg.ui = 1 << i;
+      } else if (ev->x < x + TEXTW(selmon->ltsymbol))
+        click = ClkLtSymbol;
+      else if (ev->x > selmon->ww - (int)TEXTW(stext))
+        click = ClkStatusText;
+      else
+        click = ClkWinTitle;
+    } else if ((c = wintoclient(ev->window))) {
+      focus(c);
+      restack(selmon);
+      XAllowEvents(dpy, ReplayPointer, CurrentTime);
+      click = ClkClientWin;
+    }
+    for (i = 0; i < LENGTH(buttons); i++)
+      if (click == buttons[i].click && buttons[i].func && buttons[i].button == ev->button
+      && CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state))
+        buttons[i].func(click == ClkTagBar && buttons[i].arg.i == 0 ? &arg : &buttons[i].arg);
+  }
 
-void
-checkotherwm(void)
-{
-	xerrorxlib = XSetErrorHandler(xerrorstart);
-	/* this causes an error if some other window manager is running */
-	XSelectInput(dpy, DefaultRootWindow(dpy), SubstructureRedirectMask);
-	XSync(dpy, False);
-	XSetErrorHandler(xerror);
-	XSync(dpy, False);
-}
+  void
+  checkotherwm(void)
+  {
+    xerrorxlib = XSetErrorHandler(xerrorstart);
+    /* this causes an error if some other window manager is running */
+    XSelectInput(dpy, DefaultRootWindow(dpy), SubstructureRedirectMask);
+    XSync(dpy, False);
+    XSetErrorHandler(xerror);
+    XSync(dpy, False);
+  }
 
-void
-cleanup(void)
-{
-	Arg a = {.ui = ~0};
-	Layout foo = { "", NULL };
-	Monitor *m;
-	size_t i;
+  void
+  cleanup(void)
+  {
+    Arg a = {.ui = ~0};
+    Layout foo = { "", NULL };
+    Monitor *m;
+    size_t i;
 
-	view(&a);
-	selmon->lt[selmon->sellt] = &foo;
-	for (m = mons; m; m = m->next)
-		while (m->stack)
-			unmanage(m->stack, 0);
-	XUngrabKey(dpy, AnyKey, AnyModifier, root);
-	while (mons)
-		cleanupmon(mons);
-	for (i = 0; i < CurLast; i++)
-		drw_cur_free(drw, cursor[i]);
-	for (i = 0; i < LENGTH(colors); i++)
-		free(scheme[i]);
-	free(scheme);
-	XDestroyWindow(dpy, wmcheckwin);
-	drw_free(drw);
-	XSync(dpy, False);
-	XSetInputFocus(dpy, PointerRoot, RevertToPointerRoot, CurrentTime);
-	XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
-}
+    view(&a);
+    selmon->lt[selmon->sellt] = &foo;
+    for (m = mons; m; m = m->next)
+      while (m->stack)
+        unmanage(m->stack, 0);
+    XUngrabKey(dpy, AnyKey, AnyModifier, root);
+    while (mons)
+      cleanupmon(mons);
+    for (i = 0; i < CurLast; i++)
+      drw_cur_free(drw, cursor[i]);
+    for (i = 0; i < LENGTH(colors); i++)
+      free(scheme[i]);
+    free(scheme);
+    XDestroyWindow(dpy, wmcheckwin);
+    drw_free(drw);
+    XSync(dpy, False);
+    XSetInputFocus(dpy, PointerRoot, RevertToPointerRoot, CurrentTime);
+    XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
+  }
 
-void
-cleanupmon(Monitor *mon)
-{
-	Monitor *m;
+  void
+  cleanupmon(Monitor *mon)
+  {
+    Monitor *m;
 
-	if (mon == mons)
-		mons = mons->next;
-	else {
-		for (m = mons; m && m->next != mon; m = m->next);
-		m->next = mon->next;
-	}
-	XUnmapWindow(dpy, mon->barwin);
+    if (mon == mons)
+      mons = mons->next;
+    else {
+      for (m = mons; m && m->next != mon; m = m->next);
+      m->next = mon->next;
+    }
+    XUnmapWindow(dpy, mon->barwin);
 	XDestroyWindow(dpy, mon->barwin);
 	free(mon);
 }
@@ -720,29 +720,34 @@ drawbar(Monitor *m)
 			urg |= c->tags;
 	}
 	x = 0;
-	for (i = 0; i < LENGTH(tags); i++) {
+/*	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
-		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
-		if (occ & 1 << i)
+		drw_text_rect(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i); // tags sekcija, also problem ko vrzes use na tag 0;
+//		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i); // default
+	//	if (occ & 1 << i) // to je probava
 			drw_rect(drw, x + boxs, boxs, boxw, boxw,
 				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
 				urg & 1 << i);
 		x += w;
-	}
+	}*/
 	w = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+//	x = drw_text_rect(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0); // zgleda ko da se nc ne spremeni
 
 	if ((w = m->ww - tw - x) > bh) {
 		if (m->sel) {
 //			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0); // za win info.
 			if (m->sel->isfloating)
-				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+				//drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0); // ta je komentar
+       drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+//				drw_rect(drw, x + boxs, boxs, boxw, boxw, 0, 0); ta je ko je text cudn
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_rect(drw, x, 0, w, bh, 1, 1);
+			// drw_rect(drw, x, 0, w, bh, 0, 1); // testiran filled
 		}
 	}
 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
