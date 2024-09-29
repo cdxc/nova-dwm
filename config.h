@@ -21,6 +21,7 @@
  static const char sfg[]        = "#000000";
  static const char sbg[]        = "#A0D0A0";
  static const char sbor[]        = "#D9D9D9";
+ static const char h[]           = "#ffffff"; // v kvadratnem stilu edina barva?
  static const char *colors[][3]      = {
  	/*               fg         bg         border   */
 /* 	[SchemeNorm] = { nfg, nbg, nbor },
@@ -30,13 +31,19 @@
  	[SchemeNorm] = { col_gray3, col_gray4, col_gray1 },
  	[SchemeSel]  = { col_gray4, col_gray3, col_cyan },
 */
+// gothic
+ 	[SchemeNorm] = { "#3f303f", "#000000", "#000000"},
+ 	[SchemeSel] =  { "#3f3f3f", "#2d1f2d", "#4f3f4f"},
 
- 	[SchemeNorm] = { "#ffffff", "#000000", "#000000"},
- 	[SchemeSel] =  { "#ffffff", "#1fecd0", "#888888"},
+/*
+ 	[SchemeNorm] = { h, "#000000", "#000000"},
+ 	[SchemeSel] =  { h, h, h},
+    */
  };
  
  /* tagging */
- static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+ //static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+ static const char *tags[] = { "I", "II", "III", "IV", "V", "VI", "VII", "IIX", "IX" };
  
  static const Rule rules[] = {
  	/* xprop(1):
