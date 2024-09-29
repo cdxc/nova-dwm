@@ -720,37 +720,36 @@ drawbar(Monitor *m)
 			urg |= c->tags;
 	}
 	x = 0;
-/*	for (i = 0; i < LENGTH(tags); i++) {
+	for (i = 0; i < LENGTH(tags); i++) { 
+//	for (i = 0; i < 4; i++) { //recemo da je sam 4 doug
 		w = TEXTW(tags[i]);
-		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
-		drw_text_rect(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i); // tags sekcija, also problem ko vrzes use na tag 0;
-//		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i); // default
-	//	if (occ & 1 << i) // to je probava
-			drw_rect(drw, x + boxs, boxs, boxw, boxw,
-				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
-				urg & 1 << i);
-		x += w;
-	}*/
-	w = TEXTW(m->ltsymbol);
-	drw_setscheme(drw, scheme[SchemeNorm]);
-	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+    	drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]); 
+		drw_text_rect(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i); // tags sekcija, problem da se ne wipajo
+//		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i); // default; v tem primeru kvadratki refreshajo
+	if (occ & 1 << i) // selected kvadratek                                 ..// ce je se ta, 
+	//		drw_rect(drw, x + boxs, boxs, boxw, boxw,                       //     ^^^^^^^ 
+	//			m == selmon && selmon->sel && selmon->sel->tags & 1 << i,   // ce je samo to komentirano se prikaze samo kvadratki, ki so aktiuni
+	//			urg & 1 << i);                                              //
+		x += w; // w kot width
+	}
+//	w = TEXTW(m->ltsymbol); // mode (floating/ne)
+//	drw_setscheme(drw, scheme[SchemeNorm]); 
+	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0); // ne vem kaj nardi
 //	x = drw_text_rect(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0); // zgleda ko da se nc ne spremeni
 
 	if ((w = m->ww - tw - x) > bh) {
 		if (m->sel) {
-//			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0); // za win info.
+			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]); // komentirano more bit?
+//			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0); // za win info.   // PUST NA MIR
 			if (m->sel->isfloating)
-				//drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0); // ta je komentar
-       drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
-//				drw_rect(drw, x + boxs, boxs, boxw, boxw, 0, 0); ta je ko je text cudn
+                  drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0); // pust namer
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_rect(drw, x, 0, w, bh, 1, 1);
-			// drw_rect(drw, x, 0, w, bh, 0, 1); // testiran filled
+//		    drw_rect(drw, x, 0, w, bh, 0, 1); // testiran filled
 		}
 	}
-	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
+	drw_map(drw, m->barwin, 0, 0, m->ww, bh); // narise ceu bar
 }
 
 void
