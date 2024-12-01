@@ -22,6 +22,7 @@
  static const char sbg[]        = "#A0D0A0";
  static const char sbor[]        = "#D9D9D9";
  static const char h[]           = "#ffffff"; // v kvadratnem stilu edina barva?
+ static const char z[]           = "#000000"; // v kvadratnem stilu edina barva?
  static const char *colors[][3]      = {
  	/*               fg         bg         border   */
 /* 	[SchemeNorm] = { nfg, nbg, nbor },
@@ -32,13 +33,12 @@
  	[SchemeSel]  = { col_gray4, col_gray3, col_cyan },
 */
 // gothic
- 	[SchemeNorm] = { "#3f303f", "#000000", "#000000"},
- 	[SchemeSel] =  { "#3f3f3f", "#2d1f2d", "#4f3f4f"},
+// 	[SchemeNorm] = { "#3f303f", "#000000", "#000000"},
+// 	[SchemeSel] =  { "#3f3f3f", "#2d1f2d", "#4f3f4f"},
 
-/*
- 	[SchemeNorm] = { h, "#000000", "#000000"},
- 	[SchemeSel] =  { h, h, h},
-    */
+
+ 	[SchemeNorm] = { h, z, z},
+ 	[SchemeSel] =  { z, h, h},
  };
  
  /* tagging */
@@ -105,6 +105,7 @@
  	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
  	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
  	{ MODKEY|ShiftMask,                       XK_Return, zoom,           {0} },
+	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
  	{ MODKEY,                       XK_Tab,    view,           {0} },
  	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
  	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
