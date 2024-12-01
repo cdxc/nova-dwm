@@ -199,8 +199,7 @@ static int sendevent(Client *c, Atom proto);
 static void sendmon(Client *c, Monitor *m);
 static void setclientstate(Client *c, long state);
 static void setfocus(Client *c);
-static void togglefullscr(const Arg *arg);
-static void fullscreen(const Arg *arg);
+static void setfullscreen(Client *c, int fullscreen);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
 static void setup(void);
@@ -1482,13 +1481,6 @@ setfocus(Client *c)
 			(unsigned char *) &(c->win), 1);
 	}
 	sendevent(c, wmatom[WMTakeFocus]);
-}
-
-void
-togglefullscr(const Arg *arg)
-{
-  if(selmon->sel)
-    setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
 }
 
 void
